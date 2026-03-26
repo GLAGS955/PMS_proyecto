@@ -1,0 +1,16 @@
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+} 
+
+/* Si usas position fixed, agrega padding-bottom al body para no ocultar contenido */
+body {
+    padding-bottom: 50;
+} 
+
+footer{
+    max-height: 200px;
+}

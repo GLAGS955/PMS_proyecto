@@ -1,0 +1,38 @@
+{% extends 'maestryAdmin.html' %}
+
+{% block title %}Mi Perfil{% endblock %}
+
+{% block link %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/perfilusuario.css') }}">
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="perfil-container">
+        <div class="foto-container">
+            <img src="https://static.vecteezy.com/system/resources/previews/026/966/960/non_2x/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="Foto de Perfil" class="foto-perfil">
+        </div>
+        
+        <div class="info-container">
+            <h2 class="nombre"> {{ session['nombre'] }} </h2>
+                <br>
+            <h6> <strong>Correo:</strong> {{session['correo']}}</h6>
+                <br>
+            <h6> <strong>Rol:</strong> {{session['rol']}}</h6>
+                <br>
+            <p class="datos"><strong>Edad:</strong> {{ session['edad'] }} años </p>
+            <p class="datos"><strong>Sexo:</strong> {{ session['sexo'] }} </p>
+        </div>
+
+        <div class="botones-container">
+            <a href="{{url_for('acciones_usuarios.editar_perfil')}}" class="boton-editar">Editar</a>
+            <a href=" {{url_for('cambiar_contraseña.vista_recuperar')}} " class="boton-editar">Cambiar Contraseña</a>
+        </div>
+        
+    </div>
+{% endblock %}
+
+
+

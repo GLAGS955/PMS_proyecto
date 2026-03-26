@@ -1,0 +1,76 @@
+/* Contenedor principal del formulario */
+.formulario-edit {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* Si la tarjeta es muy ancha, esto la limita un poco para que se vea elegante */
+    max-width: 400px; 
+    gap: 15px; /* Espaciado uniforme entre cada campo */
+    margin: 0 auto; /* Asegura que el formulario esté centrado en su caja */
+}
+
+/* Título de la sección */
+.titulo-edit {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* Grupo de Etiqueta (Label) + Input */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.input-group label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+/* Estilo para los campos de texto y selectores */
+.input-group input, 
+.input-group select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ced4da; /* Color de borde suave tipo Bootstrap */
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box; /* Evita que el padding rompa el ancho del 100% */
+    transition: border-color 0.3s ease;
+}
+
+/* Efecto al hacer clic en un input (Focus) */
+.input-group input:focus, 
+.input-group select:focus {
+    outline: none;
+    border-color: goldenrod; /* El borde se pone dorado al escribir */
+    box-shadow: 0 0 5px rgba(218, 165, 32, 0.3);
+}
+
+/* El botón de guardar/editar */
+.boton-guardar {
+    background-color: goldenrod;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    width: 100%;
+}
+
+.boton-guardar:hover {
+    background-color: #daa520; /* Dorado un poco más oscuro */
+}
+
+.boton-guardar:active {
+    transform: scale(0.98); /* Pequeño efecto de "hundido" al hacer clic */
+}

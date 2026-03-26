@@ -1,0 +1,18 @@
+
+//Archivos y Carpetas principales dentro de los templates:
+
+/templates
+
+-Archivos sueltos:
+
+base.html = plantilla maestra que las demas heredan como base.
+inicio.html = es el inicio de la app.
+contactanos.html = plantilla tipo formulario para hablar con el equipo de desarrollo.
+
+-Carpetas:
+
+/Maestry = plantillas mas importantes aca dentro esta ('base.html')
+/Auth = plantillas html de login, olvidaste contraseña y demas accesos.
+/common = plantillas html de uso coumun cono navbars, footer y demas.
+/Errors = plantillas html de errores, para mostrar una vista mas amigable al usuario.
+/Opers = plantillas html que manejan las funcionalidades de la app.

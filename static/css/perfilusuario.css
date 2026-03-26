@@ -1,0 +1,74 @@
+
+
+.perfil-container {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    background-color: #fff; 
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    max-width: 350px; 
+    width: 100%;
+}
+
+
+.foto-perfil {
+    width: 150px; 
+    height: 150px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: 2px solid goldenrod; 
+    margin-bottom: 20px; 
+}
+
+
+.info-container {
+    text-align: center; 
+    margin-bottom: 30px; 
+}
+
+.nombre {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.datos {
+    font-size: 16px;
+    color: #555; 
+    margin: 5px 0; 
+}
+
+
+.boton-editar {
+    background-color: goldenrod; 
+    color: #fff; 
+    border: none; 
+    padding: 10px 20px;
+    border-radius: 5px; 
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+}
+
+.boton-editar:hover {
+    background-color: #1100ff; 
+}
+
+.botones-container {
+    display: flex;
+    justify-content: center; 
+    gap: 15px; 
+    width: 100%;
+    margin-top: 10px;
+}
+
+
+.boton-editar {
+    text-align: center;
+    text-decoration: none; 
+    display: inline-block; 
+}
