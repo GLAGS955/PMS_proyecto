@@ -27,5 +27,5 @@ class User():
     def hashear_pista(cls, pista):
         pista_hash = generate_password_hash(pista)
         return pista_hash
-
+   
 

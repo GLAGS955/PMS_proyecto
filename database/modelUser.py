@@ -35,6 +35,7 @@ class ModelUser():
                 return None
 
         except Exception as ex:
+            print(ex)
             raise ValueError("Error de inicio de session") from ex
 
 
@@ -86,7 +87,7 @@ class ModelUser():
         try:
             cursor = db.connection.cursor()
             hash_nueva_pwd = User.hashear_pwd(nueva_pwd)
-            sql = "UPDATE usuarios SET password = %s WHERE correo = %s"
+            sql = "UPDATE usuarios SET pwd = %s WHERE correo = %s"
 
             cursor.execute(sql, (hash_nueva_pwd, correo))
             db.connection.commit()
@@ -102,3 +103,22 @@ class ModelUser():
             print(ex)
             raise ValueError("Error de actualizar contraseña") from ex
         
+    @classmethod
+    def actualizar_perfil(cls, db, correo, nuevo_nombre, nuevo_sexo):
+        try:
+            cursor = db.connection.cursor()
+            sql = "UPDATE usuarios SET nombre = %s, sexo = %s WHERE correo = %s"
+
+            cursor.execute(sql, (nuevo_nombre,nuevo_sexo, correo))
+            db.connection.commit()
+
+            if cursor.rowcount > 0:
+                cursor.close()
+                return True
+            else:
+                cursor.close()
+                return False
+
+        except Exception as ex:
+            print(ex)
+            raise ValueError("Error de actualizar perfil") from ex

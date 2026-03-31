@@ -20,6 +20,9 @@ def editar_perfil():
     if request.method == 'POST':
         nombre = request.form.get('nombre')
         sexo = request.form.get('sexo')
-        foto = request.form.get('foto')
-        print(nombre, sexo, foto)
+        correo = session['correo']
+        ModelUser.actualizar_perfil(db, correo, nombre, sexo)
+        flash("¡Tu perfil ha sido actualizado correctamente!")
+        return render_template('common/perfilusuario.html')
+
     return render_template('common/editarperfil.html')

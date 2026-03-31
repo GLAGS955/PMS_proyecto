@@ -24,9 +24,11 @@ db.init_app(app_ing)
 from controladores.auth import auth
 from controladores.acciones_usuarios import acciones_usuarios
 from controladores.cambiar_pwd import cambiar_contraseña
+from controladores.rutas_sbar import rutas_sbar
 app_ing.register_blueprint(auth)
 app_ing.register_blueprint(acciones_usuarios)
 app_ing.register_blueprint(cambiar_contraseña)
+app_ing.register_blueprint(rutas_sbar)
 
 #                                            Controladores principales
 @app_ing.route("/")
@@ -37,12 +39,12 @@ def Index():
 @login_requerido
 @es_usted_admin
 def Inicio_admin():
-    return render_template("Inicios/admin.html")
+    return render_template("Inicios/sbar_admin.html")
 
 @app_ing.route("/clientes")
 @login_requerido
 def Inicio_clientes():
-    return render_template("Inicios/clientes.html")
+    return render_template("Inicios/sbar_clientes.html")
 
 
 @app_ing.route("/operaciones")

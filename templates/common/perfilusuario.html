@@ -1,4 +1,4 @@
-{% extends 'maestryAdmin.html' %}
+{% extends 'Inicios/sbar_admin.html' if session.get('rol') in ['admin'] else 'Inicios/sbar_clientes.html' %}
 
 {% block title %}Mi Perfil{% endblock %}
 
@@ -7,10 +7,20 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/perfilusuario.css') }}">
 {% endblock %}
 
-
-
 {% block content %}
     <div class="perfil-container">
+        
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}-success" id="alerta">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+        {% endwith %}
+
         <div class="foto-container">
             <img src="https://static.vecteezy.com/system/resources/previews/026/966/960/non_2x/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="Foto de Perfil" class="foto-perfil">
         </div>
@@ -34,5 +44,16 @@
     </div>
 {% endblock %}
 
+{% block script %}
 
+    <script>
+    setTimeout(function() {
+        const alertas = document.querySelectorAll('.alert');
+        
+        alertas.forEach(function(alerta) {
+            alerta.style.display = 'none';
+        });
+    }, 3000);
+    </script>
+{% endblock  %}
 

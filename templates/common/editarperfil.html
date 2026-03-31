@@ -1,6 +1,6 @@
-{% extends 'maestryAdmin.html' %}
+{% extends 'Inicios/sbar_admin.html' if session.get('rol') in ['admin', 'Staff'] else 'Inicios/sbar_clientes.html' %}
 
-{% block title %}Mi Perfil{% endblock %}
+{% block title %}Configuracion{% endblock %}
 
 {% block link %}
     {{ super() }}
@@ -31,7 +31,7 @@
 
         <div class="input-group">
             <label for="foto">URL de la Foto</label>
-            <input type="text" id="foto" name="foto" placeholder="http://imagen.com/foto.jpg"  autocomplete="off" required>
+            <input type="text" id="foto" name="foto" placeholder="http://imagen.com/foto.jpg"  autocomplete="off">
         </div>
 
         <button type="submit" class="boton-guardar">Enviar</button>
