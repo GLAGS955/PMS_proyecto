@@ -10,28 +10,25 @@
 
 
 {% block content %}
-<div class="perfil-container">
+<div class="perfil-container m-3">
     <h3 class="titulo-edit">Actualizar Perfil</h3>
     <br>
     <form class="formulario-edit" action="{{ url_for('acciones_usuarios.editar_perfil') }}" method="POST">
+
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <div class="input-group">
+
+        <div class="input-group m-3">
             <label for="nombre">Nombre</label>
             <input type="text" id="nombre" name="nombre" placeholder="Tu nombre"  autocomplete="off" required>
         </div>
 
-        <div class="input-group">
+        <div class="input-group m-3">
             <label for="sexo">Sexo</label>
             <select id="sexo" name="sexo" autocomplete="off" required>
                 <option value="masculino">Masculino</option>
                 <option value="femenino">Femenino</option>
                 <option value="otro">Otro</option>
             </select>
-        </div>
-
-        <div class="input-group">
-            <label for="foto">URL de la Foto</label>
-            <input type="text" id="foto" name="foto" placeholder="http://imagen.com/foto.jpg"  autocomplete="off">
         </div>
 
         <button type="submit" class="boton-guardar">Enviar</button>

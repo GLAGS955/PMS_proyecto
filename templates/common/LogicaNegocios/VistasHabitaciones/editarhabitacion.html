@@ -1,0 +1,72 @@
+{% extends 'Inicios/sbar_admin.html'%}
+
+{% block title %} Habitaciones {% endblock %}
+
+{% block link %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4 mb-5" style="max-width: 800px;">
+    
+    <div class="mb-4 text-center">
+        <h3 class="fw-bold text-dark m-3">Editar Habitación</h3>
+        <p class="text-muted">Modifica los detalles de la habitación a continuación.</p>
+    </div>
+
+    <div class="card shadow-sm border-0 m-3" style="border-radius: 15px;">
+        <div class="card-body p-4">
+            
+            <form action="{{ url_for('habitaciones.editar_habitacion', id_exacto=id_habitacion) }}" method="POST">
+                
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="tipo" class="form-label fw-bold">Tipo de Habitación</label>
+                        <input type="text" class="form-control" id="tipo" name="tipo" 
+                            value="{{ habitacion.tipo }}" required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="grado" class="form-label fw-bold">Grado / Nivel</label>
+                        <input type="text" class="form-control" id="grado" name="grado" 
+                            value="{{ habitacion.grado }}" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="capacidad" class="form-label fw-bold">Capacidad (Personas)</label>
+                        <input type="number" class="form-control" id="capacidad" name="capacidad" 
+                            value="{{ habitacion.capacidad }}" min="1" required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="precio" class="form-label fw-bold">Precio por Noche ($)</label>
+                        <input type="number" step="0.01" class="form-control" id="precio" name="precio" 
+                            value="{{ habitacion.precio }}" min="0" required>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="descripcion" class="form-label fw-bold">Descripción</label>
+                    <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required>{{ habitacion.descripcion }}</textarea>
+                </div>
+
+                <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top">
+                    <a href="{{ url_for('habitaciones.listar_habitaciones') }}" class="btn btn-secondary px-4" style="border-radius: 10px;">
+                        Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary px-4 fw-bold" style="border-radius: 10px;">
+                        Actualizar
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

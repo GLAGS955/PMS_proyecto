@@ -1,5 +1,7 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 
+
+#Clase contenedor de ModelUser.py
 class User():
 
     def __init__(self, id_usuario, correo, nombre, pwd, pista, edad, sexo, tipo_rol):
@@ -12,7 +14,7 @@ class User():
         self.sexo = sexo
         self.tipo_rol = tipo_rol
 
-    #Checkeador universal
+    #Checkeador universal, usando para chekear las contraseñas.
     @classmethod
     def check_password(cls, campo_hash, campo_normal):
         return check_password_hash(campo_hash, campo_normal)
@@ -27,5 +29,5 @@ class User():
     def hashear_pista(cls, pista):
         pista_hash = generate_password_hash(pista)
         return pista_hash
-   
+
 

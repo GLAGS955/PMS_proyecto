@@ -6,7 +6,7 @@ from utils.security import login_requerido, es_usted_admin
 from database.modelUser import ModelUser
 from database.Entidades.user import User
 from database.db import db
-
+from database.modelHabitaciones import ModelHabitaciones
 #Configurar el blueprint auth
 rutas_sbar = Blueprint('rutas_sbar',__name__)
 
@@ -16,8 +16,3 @@ rutas_sbar = Blueprint('rutas_sbar',__name__)
 def panel_control():
     return render_template('Inicios/vistas_admin/panel_control.html')
 
-@rutas_sbar.route('/habitaciones', methods = ['GET'])
-@login_requerido
-@es_usted_admin
-def habitaciones():
-    return render_template('common/LogicaNegocios/habitaciones.html')

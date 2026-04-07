@@ -1,0 +1,100 @@
+{% extends 'Inicios/sbar_admin.html'%}
+
+{% block title %} Habitaciones {% endblock %}
+
+{% block link %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    
+    <div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+        <h5 class="mb-5 text-dark fw-bold" >Detalles de la Nueva Habitación</h5>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}-success " id="alerta" style="color: goldenrod;">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('habitaciones.agregar_habitacion') }}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="codigo" class="form-label fw-bold" style="color: blue;">Código de Habitación</label>
+                    <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Los codigos deben ser en orden de 00#" required>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="tipo" class="form-label fw-bold" style="color: blue;">Tipo de Habitación</label>
+                    <select class="form-select" id="tipo" name="tipo" required>
+                        <option value="" selected disabled style="color: blue;">Selecciona la configuración</option>
+                        <option value="Single">Single (1 Cama)</option>
+                        <option value="Doble">Doble (1 Cama grande)</option>
+                        <option value="Twin">Twin (2 Camas separadas)</option>
+                        <option value="Suite">Suite (Con sala de estar)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="capacidad" class="form-label fw-bold" style="color: blue;">Capacidad (Personas)</label>
+                    <input type="number" class="form-control" id="capacidad" name="capacidad" min="1" placeholder="1" required>
+                </div>
+                
+                <div class="col-md-4">
+                    <label for="precio" class="form-label fw-bold" style="color: blue;">Precio por Noche ($)</label>
+                    <input type="number" step="0.01" class="form-control" id="precio" name="precio" placeholder="0.00" required>
+                </div>
+                
+                <div class="col-md-4">
+                    <label for="grado" class="form-label fw-bold" style="color: blue;">Grado / Categoría</label>
+                    <select class="form-select" id="grado" name="grado" required>
+                        <option value="" selected disabled style="color: blue;">Selecciona el nivel</option>
+                        <option value="Estándar">Estándar</option>
+                        <option value="Ejecutiva Superior">Ejecutiva Superior</option>
+                        <option value="Premium">Premium</option>
+                        <option value="VIP">VIP</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="foto" class="form-label fw-bold" style="color: blue;">URL de la Foto</label>
+                <input type="text" class="form-control" id="foto" name="foto" placeholder="https://ejemplo.com/foto.jpg">
+                <div class="form-text">Pega el enlace directo a la imagen. Déjalo en blanco si no tiene foto.</div>
+            </div>
+
+            <div class="mb-4">
+                <label for="descripcion" class="form-label fw-bold" style="color: blue;">Descripción de la Habitación</label>
+                <textarea class="form-control" id="descripcion" name="descripcion" rows="4" placeholder="Describe el diseño, las vistas y las amenidades..." required></textarea>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                <a href=" {{ url_for('habitaciones.listar_habitaciones') }} " class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-success px-4">Guardar Habitación</button>
+            </div>
+            
+        </form>
+    </div>
+</div>
+{% endblock  %}
+
+{% block script %}
+    {{ super() }}
+    <script>
+    setTimeout(function() {
+        const alertas = document.querySelectorAll('.alert');
+        
+        alertas.forEach(function(alerta) {
+            alerta.style.display = 'none';
+        });
+    }, 3000); 
+    </script>
+{% endblock %}

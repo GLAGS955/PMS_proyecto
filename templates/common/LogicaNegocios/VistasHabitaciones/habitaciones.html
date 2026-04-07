@@ -1,0 +1,162 @@
+{% extends 'Inicios/sbar_admin.html' if session.get('rol') in ['admin'] else 'Inicios/sbar_clientes.html' %}
+
+{% block title %} Habitaciones {% endblock %}
+
+{% block link %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    
+<div class="container-fluid w-100 px-0">
+
+    <div class="mb-4">
+    <h4 class="fw-bold text-dark mb-1">Habitaciones</h4>
+    <p class="text-muted small mb-3">Gestiona las habitaciones, sus precios y disponibilidad.</p>
+    
+        {% if session['rol'] == 'admin' %}
+        <div class="d-flex gap-2">
+            <a class="btn btn-success text-white" href=" {{ url_for('habitaciones.agregar_habitacion') }} ">➕ Añadir Habitacion</a>
+            <a class="btn btn-info text-white" href="#">👁️ Ver Reservas</a>
+        </div>
+        {% endif %}
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}-success" id="alerta" style="color: goldenrod;">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+        {% endwith %}
+
+    </div>
+
+    <div class="overflow-auto pe-2" style="max-height: 70vh;">
+        
+        {% for habitacion in habitaciones %}
+
+<div class="d-flex align-items-center p-3 mb-3 bg-white border rounded shadow-sm">
+    
+    <div class="flex-shrink-0 me-4">
+        <img src="{{ habitacion.foto }}" 
+            alt="Foto Habitación" 
+            class="shadow-sm" 
+            style="width: 75px; height: 75px; border-radius: 5px; object-fit: cover;">
+    </div>
+
+    <div class="flex-grow-1 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        
+        <div class="d-flex flex-column" style="max-width: 350px;">
+            <span class="fw-bold text-dark fs-5 mb-1">
+                {{ habitacion.tipo }} <span class="text-muted fs-6 fw-normal">| {{ habitacion.grado }}</span>
+            </span>
+            <small class="text-secondary fw-bold mb-1">
+                Código: {{ habitacion.codigo }} <span class="fw-normal">(ID: {{ habitacion.id_habitacion }})</span>
+            </small>
+            <small class="text-muted text-truncate d-inline-block" style="max-width: 100%;">
+                {{ habitacion.descripcion }}
+            </small>
+        </div>
+
+        <div class="d-flex flex-column align-items-md-end text-start text-md-end">
+            <span class="text-muted small mb-1">Capacidad: <strong>{{ habitacion.capacidad }} Persona/as.</strong></span>
+            <span class="fw-bold fs-5" style="color: goldenrod;">${{ habitacion.precio }} <small class="text-muted fs-6 fw-normal">/noche</small></span>
+        </div>
+
+        
+            
+        <div class="text-md-end">
+    
+        {% if session.get('rol') == 'admin' %}
+            <span class="badge px-4 py-2 text-white shadow-sm 
+                    {% if habitacion.estado == 'Disponible' %} bg-success 
+                    {% elif habitacion.estado == 'Pendiente' %} bg-warning 
+                    {% else %} bg-danger 
+                    {% endif %}" 
+                style="border-radius: 15px; font-size: 0.9rem; min-width: 110px; text-align: center;">
+                            {{ habitacion.estado }}
+            </span>
+
+        {% else %}
+        
+            {% if habitacion.estado in ['Pendiente', 'Ocupada'] %}
+                <span class="badge px-4 py-2 text-white shadow-sm bg-danger" 
+                    style="border-radius: 15px; font-size: 0.9rem; min-width: 110px; text-align: center;">
+                            No Disponible
+                </span>
+        
+            {% elif habitacion.estado == 'Disponible' %}
+                <span class="badge px-4 py-2 text-white shadow-sm bg-success" 
+                style="border-radius: 15px; font-size: 0.9rem; min-width: 110px; text-align: center;">
+                Disponible
+                </span>
+            {% endif %}
+        
+        {% endif %}
+
+        </div> 
+
+        
+    </div> 
+    
+    <div class="d-flex align-items-center gap-2 ms-3 border-start ps-3" style="min-width: 120px; justify-content: center;">
+
+        {% if session.get('rol') == 'admin' %} 
+            
+            {% if habitacion.estado == 'Disponible' %}
+            
+                <a class="btn btn-primary text-white p-2" 
+                    href="{{ url_for('habitaciones.editar_habitacion', id_exacto=habitacion.id_habitacion) }}" 
+                    style="border-radius: 12px; line-height: 1;">
+                    ✏️
+                </a>
+
+                <form action="{{ url_for('habitaciones.eliminar_habitacion', id_exacto=habitacion.id_habitacion) }}" method="POST" class="m-0 p-0">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" 
+                            class="btn btn-danger p-2" 
+                            style="border-radius: 12px; line-height: 1;"
+                            onclick="return confirm('¿Estás seguro de que deseas eliminar esta habitación?');">
+                            ❌
+                    </button>
+                </form>
+
+            {% else %}
+                <span class="badge bg-secondary text-white p-2" 
+                    style="border-radius: 10px; font-size: 0.85rem;" 
+                    title="No se puede modificar una habitación en uso">
+                        🔒 Bloqueado
+                </span>
+            {% endif %}
+
+        
+        {% elif session.get('rol') == 'usuario' %}
+            
+            {% if habitacion.estado == 'Disponible' %}
+                <a class="btn text-white px-3" href="#" style="border-radius: 12px; background-color: goldenrod; border-color: black;">
+                    Reservar
+                </a>
+            {% endif %}
+
+        {% endif %}
+
+    </div> </div> {% endfor %}
+        </div> 
+    </div>
+
+{% endblock content %}
+
+{% block script %}
+    {{ super() }}
+    <script>
+    setTimeout(function() {
+        const alertas = document.querySelectorAll('.alert');
+        
+        alertas.forEach(function(alerta) {
+            alerta.style.display = 'none';
+        });
+    }, 3000); 
+    </script>
+{% endblock %}

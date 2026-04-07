@@ -45,7 +45,7 @@
 {% endblock %}
 
 {% block script %}
-
+    {{ super() }}
     <script>
     setTimeout(function() {
         const alertas = document.querySelectorAll('.alert');

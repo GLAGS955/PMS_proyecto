@@ -13,14 +13,14 @@
             <ul class="nav nav-pills flex-column mb-auto mt-2">
                 <li class="nav-item"><a href="{{url_for('Inicio_admin')}}" class="nav-link text-white">Inicio</a></li>
                 <li><a href=" {{ url_for('rutas_sbar.panel_control') }} " class="nav-link text-white">Panel de Control</a></li>
-                <li><a href="{{ url_for('rutas_sbar.habitaciones') }}" class="nav-link text-white">Habitaciones</a></li>
+                <li><a href="{{ url_for('habitaciones.listar_habitaciones') }}" class="nav-link text-white">Habitaciones</a></li>
                 <li><a href="#" class="nav-link text-white">Reservaciones</a></li>
                 <li><a href="#" class="nav-link text-white">Pagos</a></li>
             </ul>
         </div>
 
         <main class="flex-grow-1 p-4 bg-light overflow-y-auto">
-            <div class="card shadow-sm min-vh-50 h-100">
+            <div class="card shadow-sm min-vh-50 h-auto border-0">
                 <div class="card-body d-flex justify-content-center align-items-center">
                     {% block content %}
 

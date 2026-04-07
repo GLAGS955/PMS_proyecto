@@ -25,10 +25,16 @@ from controladores.auth import auth
 from controladores.acciones_usuarios import acciones_usuarios
 from controladores.cambiar_pwd import cambiar_contraseña
 from controladores.rutas_sbar import rutas_sbar
+from controladores.habitaciones import habitaciones
+from controladores.reservaciones import reservaciones
+
+
 app_ing.register_blueprint(auth)
 app_ing.register_blueprint(acciones_usuarios)
 app_ing.register_blueprint(cambiar_contraseña)
 app_ing.register_blueprint(rutas_sbar)
+app_ing.register_blueprint(habitaciones)
+app_ing.register_blueprint(reservaciones)
 
 #                                            Controladores principales
 @app_ing.route("/")
@@ -47,18 +53,6 @@ def Inicio_clientes():
     return render_template("Inicios/sbar_clientes.html")
 
 
-@app_ing.route("/operaciones")
-@login_requerido
-def serve_operaciones():
-    return render_template("Opers/Operaciones.html")
-
-
-@app_ing.route("/contactanos")
-@login_requerido
-def contactanos():
-    return render_template("contactanos.html")
-
-
 #Manejo de Errores [ 401 / 403 / 404 / 405 / 500 ]
 @app_ing.errorhandler(404)
 def pagina_no_encontrada(_error):
@@ -68,8 +62,8 @@ def pagina_no_encontrada(_error):
 #Configuraciones de errores
 app_ing.register_error_handler(404, pagina_no_encontrada)
 
-def correr_app():
-    if __name__=='__main__':
-        app_ing.run()
 
-correr_app()
+if __name__=='__main__':
+    app_ing.run()
+
+

@@ -23,6 +23,6 @@ def editar_perfil():
         correo = session['correo']
         ModelUser.actualizar_perfil(db, correo, nombre, sexo)
         flash("¡Tu perfil ha sido actualizado correctamente!")
-        return render_template('common/perfilusuario.html')
+        return redirect(url_for('acciones_usuarios.perfil_usuario'))
 
     return render_template('common/editarperfil.html')

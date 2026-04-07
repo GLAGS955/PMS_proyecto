@@ -61,7 +61,7 @@ class ModelUser():
         except Exception as ex:
             print(ex)
             raise ValueError("Error de registro") from ex
-        
+
     @classmethod
     def verificar_pista(cls, db, correo, pista):
         try:
