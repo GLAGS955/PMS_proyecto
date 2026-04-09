@@ -1,0 +1,85 @@
+{% extends 'Inicios/sbar_admin.html' %}
+
+{% block title %} Clientes {% endblock %}
+
+{% block link %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    
+<div class="container-fluid w-100 px-0">
+
+    <div class="mb-4">
+        <h4 class="fw-bold text-dark mb-1">Directorio de Clientes</h4>
+        <p class="text-muted small mb-3">Historial de clientes registrados en el sistema.</p>
+    
+        <div class="d-flex gap-2">
+            <a class="btn text-white bg-success" href="{{ url_for('clientes.agregar_cliente') }}">
+                ➕ Añadir Nuevo Cliente
+            </a>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}-success mt-3 shadow-sm" id="alerta" style="color: goldenrod; border-left: 4px solid goldenrod;">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="overflow-auto pe-2" style="max-height: 70vh;">
+        
+        {% if clientes %}
+            {% for cliente in clientes %}
+            <div class="d-flex align-items-center p-3 mb-3 bg-white border rounded shadow-sm">
+                
+                <div class="flex-shrink-0 me-4">
+                    <div class="d-flex justify-content-center align-items-center rounded-circle bg-light border" style="width: 60px; height: 60px;">
+                        <span class="fs-3 text-secondary">👤</span>
+                    </div>
+                </div>
+
+                <div class="flex-grow-1 d-flex flex-column">
+                    <span class="fw-bold text-dark fs-5 mb-1">
+                        {{ cliente.nombre }}
+                    </span>
+                    <span class="text-muted small">
+                        <strong>Cédula/Pasaporte:</strong> {{ cliente.cedula }}
+                    </span>
+                    </div>
+
+                    <a class="btn btn-primary text-white p-2" 
+                    href="{{ url_for('clientes.ver_cliente', id_exacto=cliente.id_cliente) }}" 
+                    style="border-radius: 12px; line-height: 1;">
+                    ✏️
+                    </a>
+            </div> 
+            {% endfor %}
+        {% else %}
+            <div class="text-center p-5 bg-white border rounded shadow-sm text-muted">
+                <span class="fs-1 d-block mb-2"></span>
+                No hay clientes registrados en el sistema todavía.
+            </div>
+        {% endif %}
+
+    </div> 
+</div>
+
+{% endblock content %}
+
+{% block script %}
+    {{ super() }}
+    <script>
+    // Tu mismo script de 3 segundos para desaparecer alertas
+    setTimeout(function() {
+        const alertas = document.querySelectorAll('.alert');
+        alertas.forEach(function(alerta) {
+            alerta.style.display = 'none';
+        });
+    }, 3000); 
+    </script>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends 'Inicios/sbar_admin.html' if session.get('rol') == 'admin' else 'Inicios/sbar_clientes.html' %}
+
+{% block title %} Formulario de Reservación {% endblock %}
+
+{% block link %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5" style="max-width: 800px;">
+    
+    <div class="mb-4 text-center">
+        <h3 class="fw-bold text-dark m-3">
+            {% if session.get('rol') == 'admin' %} Gestión de Nueva Reserva {% else %} Completa tu Reservación {% endif %}
+        </h3>
+        <p class="text-muted">Verifica los datos y selecciona las fechas de estadía.</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ 'success' if category == 'message' else category }} text-center fw-bold shadow-sm" style="color: goldenrod; background-color: #fff8e1; border-color: goldenrod;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="card shadow-sm border-0 m-3" style="border-radius: 15px;">
+        <div class="card-body p-4 p-md-5">
+            
+            <form action="{{ url_for('reservaciones.agregar_reservacion') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                
+                <div class="mb-4">
+                    {% if session.get('rol') == 'admin' %}
+                        <label class="form-label fw-bold text-primary">Seleccionar Cliente</label>
+                        <select class="form-select form-select-lg bg-light" name="id_cliente" required>
+                            <option value="" disabled selected>Buscar en el directorio...</option>
+                            {% for c in clientes %}
+                                <option value="{{ c.id_cliente }}">{{ c.nombre }} ({{ c.cedula }})</option>
+                            {% endfor %}
+                        </select>
+                    {% else %}
+                        <div class="alert alert-primary mb-0 shadow-sm border-0" style="border-left: 5px solid #0d6efd;">
+                            <i class="bi bi-person-circle fs-5 me-2"></i> Reservando a nombre de: <strong>{{ session.get('nombre', 'Usuario Actual') }}</strong>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4 border-top pt-4">
+                    <label class="form-label fw-bold text-primary">Habitación</label>
+                    
+                    {% if habitacion_pre %}
+                        <div class="d-flex align-items-center p-3 border rounded bg-light shadow-sm">
+                            <input type="hidden" name="id_habitacion" value="{{ habitacion_pre.id_habitacion }}">
+                            
+                            <div class="flex-shrink-0 me-3">
+                                <span class="fs-1">🛏️</span>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h5 class="mb-0 fw-bold text-dark">{{ habitacion_pre.tipo }} | {{ habitacion_pre.grado }}</h5>
+                                <span class="text-muted small">Cód: {{ habitacion_pre.codigo }} | Capacidad: {{ habitacion_pre.capacidad }} pers.</span>
+                            </div>
+                            <div class="text-end">
+                                <span class="fw-bold fs-5" style="color: goldenrod;">${{ habitacion_pre.precio }}</span><small class="text-muted">/noche</small>
+                            </div>
+                        </div>
+                    {% else %}
+                        <select class="form-select form-select-lg bg-light" name="id_habitacion" required>
+                            <option value="" disabled selected>Elige una habitación disponible...</option>
+                            {% for h in habitaciones %}
+                                {% if h.estado == 'Disponible' %}
+                                    <option value="{{ h.id_habitacion }}">Hab. {{ h.codigo }} - {{ h.tipo }} (${{ h.precio }}/noche)</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                </div>
+
+                <div class="row mb-4 border-top pt-4">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold text-primary">Fecha de Entrada (Check-in)</label>
+                        <input type="date" class="form-control form-control-lg bg-light" name="checkin" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold text-primary">Fecha de Salida (Check-out)</label>
+                        <input type="date" class="form-control form-control-lg bg-light" name="checkout" required>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top">
+                    <button type="button" onclick="history.back()" class="btn btn-secondary px-4" style="border-radius: 8px;">Atrás</button>
+                    <button type="submit" class="btn text-white px-5 fw-bold shadow-sm" style="background-color: goldenrod; border-radius: 8px;">
+                        Confirmar Reservación
+                    </button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+    {{ super() }}
+    <script>
+    setTimeout(function() {
+        const alertas = document.querySelectorAll('.alert');
+        
+        alertas.forEach(function(alerta) {
+            alerta.style.display = 'none';
+        });
+    }, 3000); 
+    </script>
+{% endblock %}

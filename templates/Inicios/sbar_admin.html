@@ -14,8 +14,9 @@
                 <li class="nav-item"><a href="{{url_for('Inicio_admin')}}" class="nav-link text-white">Inicio</a></li>
                 <li><a href=" {{ url_for('rutas_sbar.panel_control') }} " class="nav-link text-white">Panel de Control</a></li>
                 <li><a href="{{ url_for('habitaciones.listar_habitaciones') }}" class="nav-link text-white">Habitaciones</a></li>
-                <li><a href="#" class="nav-link text-white">Reservaciones</a></li>
-                <li><a href="#" class="nav-link text-white">Pagos</a></li>
+                <li><a href="{{ url_for('clientes.listar_clientes') }}" class="nav-link text-white">Clientes</a></li>
+                <li><a href="{{ url_for('reservaciones.listar_reservaciones') }}" class="nav-link text-white">Reservaciones</a></li>
+                <li><a href=" {{ url_for('reservaciones.listar_reservaciones') }} " class="nav-link text-white">Pagos</a></li>
             </ul>
         </div>
 

@@ -106,9 +106,15 @@
         {% if session.get('rol') == 'admin' %} 
             
             {% if habitacion.estado == 'Disponible' %}
+
+                <a class="btn btn-warning text-white p-2 fw-bold" 
+                    href="{{ url_for('reservaciones.agregar_reservacion', id_habitacion=habitacion.id_habitacion) }}" 
+                    style="border-radius: 12px; line-height: 1;">
+                        Reservar
+                </a>
             
                 <a class="btn btn-primary text-white p-2" 
-                    href="{{ url_for('habitaciones.editar_habitacion', id_exacto=habitacion.id_habitacion) }}" 
+                    href="{{ url_for('habitaciones.ver_habitacion', id_exacto=habitacion.id_habitacion) }}" 
                     style="border-radius: 12px; line-height: 1;">
                     ✏️
                 </a>
@@ -135,16 +141,17 @@
         {% elif session.get('rol') == 'usuario' %}
             
             {% if habitacion.estado == 'Disponible' %}
-                <a class="btn text-white px-3" href="#" style="border-radius: 12px; background-color: goldenrod; border-color: black;">
+                <a class="btn text-white px-3" href="{{ url_for('clientes.eres_cliente', id_habitacion=habitacion.id_habitacion) }}" style="border-radius: 12px; background-color: goldenrod; border-color: black;">
                     Reservar
                 </a>
             {% endif %}
 
         {% endif %}
 
-    </div> </div> {% endfor %}
-        </div> 
-    </div>
+    </div> 
+        </div> {% endfor %}
+            </div> 
+                </div>
 
 {% endblock content %}
 

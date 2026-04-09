@@ -29,6 +29,79 @@
         #sidebar.sidebar-hidden {
             margin-left: -250px !important;
         }
+
+
+            /* boton de ia */
+    .btn-ia-flotante {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #FFD700, #FDB931); 
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1050;
+    cursor: pointer;
+    }
+
+    .btn-ia-flotante:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 20px rgba(255, 215, 0, 0.4) !important;
+    }
+    
+    .btn-ia-flotante svg {
+    width: 32px;
+    height: 32px;
+    fill: white;
+    }
+
+    
+    .ventana-ia {
+    position: fixed;
+    bottom: 100px; /* Posicionada justo arriba del botón */
+    right: 1.5rem;
+    width: 350px;
+    height: 450px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    z-index: 1050;
+    display: none; /* Oculta por defecto */
+    flex-direction: column;
+    overflow: hidden;
+    }
+
+  /* Encabezado de la ventana con degradado */
+    .ventana-ia-header {
+    background: linear-gradient(135deg, #FFD700, #FDB931); 
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    }
+
+  /* Cuerpo del chat (en blanco por ahora) */
+    .ventana-ia-body {
+    padding: 15px;
+    flex-grow: 1;
+    background-color: #f8f9fa; /* Un gris muy clarito tipo Bootstrap */
+    }
+
+  /* Botón X para cerrar */
+    .btn-cerrar-ia {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+    }
+    
+    .btn-cerrar-ia:hover {
+    color: #f1f1f1;
+    }
+
     </style>
     {% endblock  %}
 
@@ -45,7 +118,7 @@
                     </svg>
                 </button>
                 <img width="35" height="35" src="{{ url_for('static', filename='img/logo.jpeg') }}" alt="logo" class="rounded-circle me-2" style="object-fit: cover;">
-                <span class="fs-4 text-white fw-bold mb-0">PMS</span>
+                <span class="fs-4 text-white fw-bold mb-0">AuraStay</span>
             </div>
 
             <div class="d-flex align-items-center">

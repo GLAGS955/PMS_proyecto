@@ -1,0 +1,85 @@
+{% extends 'Inicios/sbar_admin.html' if session.get('rol') == 'admin' else 'Inicios/sbar_clientes.html' %}
+
+{% block title %} Registro de Cliente {% endblock %}
+
+{% block link %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4 mb-5">
+    
+    <div class="text-center mb-4">
+        {% if session.get('rol') == 'admin' %}
+            <h3 class="text-dark fw-bold">Registrar Nuevo Cliente</h3>
+            <p class="text-muted small">Ingresa los datos del cliente en el sistema.</p>
+        {% else %}
+            <h3 class="text-dark fw-bold">Paso 1: Tus Datos</h3>
+            <p class="text-muted small">Regístrate rápidamente para continuar con tu reserva.</p>
+        {% endif %}
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'success' if category == 'message' else category }} text-center fw-bold shadow-sm" style="color: goldenrod; background-color: #fff8e1; border-color: goldenrod;">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mx-auto" style="max-width: 650px; border-radius: 12px; background-color: #f8f9fa;">
+        <div class="card-body p-4 p-md-5">
+
+            <form action="{{ url_for('clientes.agregar_cliente', id_habitacion=id_habitacion) }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <label for="cedula" class="form-label fw-bold" style="color: #0d6efd;">
+                            {% if session.get('rol') == 'admin' %}Cédula o Pasaporte{% else %}Tu Cédula o Pasaporte{% endif %}
+                        </label>
+                        <input type="text" class="form-control form-control-lg fs-6" id="cedula" name="cedula" placeholder="402-XXXXXXX-X" required>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="nombre" class="form-label fw-bold" style="color: #0d6efd;">Nombre Completo</label>
+                        <input type="text" class="form-control form-control-lg fs-6" id="nombre" name="nombre" placeholder="Nombre y Apellido" required>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-3 mt-2 pt-4 border-top">
+                    {% if session.get('rol') == 'admin' %}
+                        <a href="{{ url_for('clientes.listar_clientes') }}" class="btn btn-secondary px-4" style="border-radius: 8px;">Cancelar</a>
+                        <button type="submit" class="btn text-white px-4 fw-bold shadow-sm" style="background-color: goldenrod; border-radius: 8px;">Guardar Cliente</button>
+                    {% else %}
+                        <a href="{{ url_for('clientes.eres_cliente') }}" class="btn btn-secondary px-4" style="border-radius: 8px;">Cancelar</a>
+                        <button type="submit" class="btn text-white px-4 fw-bold shadow-sm" style="background-color: goldenrod; border-radius: 8px;">Registrarme <i class="bi bi-arrow-right"></i></button>
+                    {% endif %}
+                </div>
+                
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block script %}
+    {{ super() }}
+    <script>
+    setTimeout(function() {
+        const alertas = document.querySelectorAll('.alert');
+        alertas.forEach(function(alerta) {
+            alerta.style.transition = "opacity 0.5s ease";
+            alerta.style.opacity = "0";
+            setTimeout(() => alerta.style.display = 'none', 500);
+        });
+    }, 3000); 
+    </script>
+{% endblock %}

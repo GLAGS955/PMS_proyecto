@@ -1,0 +1,48 @@
+{% extends 'Inicios/sbar_admin.html' %}
+{% block content %}
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+        <h5 class="mb-4 text-dark fw-bold">Crear Nueva Reservación</h5>
+        
+        <form action="{{ url_for('reservaciones.agregar_reservacion') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-primary">Cliente</label>
+                    <select class="form-select" name="id_cliente" required>
+                        <option value="" disabled selected>Seleccione un cliente...</option>
+                        {% for c in clientes %}
+                            <option value="{{ c.id_cliente }}">{{ c.nombre }} ({{ c.cedula }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-primary">Habitación</label>
+                    <select class="form-select" name="id_habitacion" required>
+                        <option value="" disabled selected>Seleccione la habitación...</option>
+                        {% for h in habitaciones %}
+                            <option value="{{ h.id_habitacion }}">Hab. {{ h.codigo }} - {{ h.tipo }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-primary">Check-in</label>
+                    <input type="date" class="form-control" name="checkin" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-primary">Check-out</label>
+                    <input type="date" class="form-control" name="checkout" required>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end border-top pt-3">
+                <button type="submit" class="btn text-white px-4" style="background-color: goldenrod;">Generar Reserva y Pagar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

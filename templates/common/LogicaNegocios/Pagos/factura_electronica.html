@@ -1,0 +1,113 @@
+{% extends 'Inicios/sbar_admin.html' if session.get('rol') == 'admin' else 'Inicios/sbar_clientes.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow border-0 mx-auto" style="max-width: 700px; border-radius: 15px;">
+        <div class="card-body p-5">
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}-success mb-4" style="color: goldenrod;">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-4 mb-4">
+                <div class="d-flex align-items-center">
+                    <img src="{{ url_for('static', filename = 'img/logo.jpeg') }}" alt="AuraStay Logo" class="rounded-circle bg-light border" style="width: 60px; height: 60px; object-fit: cover;">
+                    <h3 class="ms-3 mb-0 fw-bold" style="color: goldenrod;">AuraStay</h3>
+                </div>
+                <div class="text-end">
+                    <h5 class="fw-bold text-muted mb-1">FACTURA #00{{ factura.id_reservacion }}</h5>
+                    {% if factura.esta_pagado %}
+                        <span class="badge bg-success px-3 py-2 rounded-pill">Pagado</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">({{ factura.estado_hab }})</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-6">
+                    <h6 class="text-muted fw-bold mb-1">Facturado a:</h6>
+                    <p class="mb-0 fw-bold fs-5">{{ factura.cliente }}</p>
+                    <small class="text-muted">Cédula: {{ factura.cedula }}</small>
+                </div>
+                <div class="col-sm-6 text-sm-end mt-3 mt-sm-0">
+                    <h6 class="text-muted fw-bold mb-1">Detalles de Estadía:</h6>
+                    <p class="mb-0"><strong>In:</strong> {{ factura.checkin }}</p>
+                    <p class="mb-0"><strong>Out:</strong> {{ factura.checkout }}</p>
+                </div>
+            </div>
+
+            <table class="table table-bordered mb-4">
+                <thead class="table-light">
+                    <tr><th>Descripción</th><th class="text-center">Noches</th><th class="text-end">Total</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Habitación {{ factura.hab_codigo }}</td>
+                        <td class="text-center">{{ factura.dias }}</td>
+                        <td class="text-end fw-bold fs-5" style="color: goldenrod;">${{ factura.dias * factura.precio_bruto }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            {% if not factura.esta_pagado %}
+                <div class="border-top pt-4">
+                    {% if session.get('rol') == 'admin' %}
+
+                        <form action="{{ url_for('pagos.procesar_admin', id_reserva=factura.id_reservacion) }}" method="POST" class="d-flex align-items-end gap-3">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    
+                            <div class="flex-grow-1">
+                                <label class="form-label fw-bold text-muted small">Método de Pago</label>
+                                <select class="form-select border-2" name="metodo_pago" required>
+                                    <option value="Efectivo">Efectivo</option>
+                                    <option value="Tarjeta">Tarjeta</option>
+                                </select>
+
+                            </div>
+    
+                            <div class="d-flex gap-2">
+                    <a href="{{ url_for('reservaciones.listar_reservaciones') }}" class="btn btn-secondary px-4 py-2 fw-bold">
+                            Volver
+                    </a>
+
+                    <button type="submit" id="btnProcesarFactura" class="btn text-white px-4 py-2" style="background-color: goldenrod; font-weight: bold;" 
+                        onclick="document.getElementById('btnProcesarFactura').style.display='none'; document.getElementById('btnCargandoFactura').style.display='inline-block';">
+                        Procesar Pago
+                    </button>
+        
+                    <button type="button" id="btnCargandoFactura" class="btn text-white px-4 py-2" style="background-color: goldenrod; font-weight: bold; display: none;" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </form>
+                    {% else %}
+                        <div class="text-end">
+                            <a href="{{ url_for('pagos.simulador_pago', id_reserva=factura.id_reservacion) }}" class="btn btn-success px-5 py-2 fw-bold text-white rounded-pill">
+                                <i class="bi bi-credit-card"></i> Pagar Ahora
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+    {{ super() }}
+    <script>
+    setTimeout(function() {
+        const alertas = document.querySelectorAll('.alert');
+        
+        alertas.forEach(function(alerta) {
+            alerta.style.display = 'none';
+        });
+    }, 3000);
+    </script>
+{% endblock  %}

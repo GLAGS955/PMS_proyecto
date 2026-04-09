@@ -1,0 +1,16 @@
+{% extends 'Inicios/sbar_admin.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm border-0 mx-auto p-4 text-center" style="max-width: 400px; border-radius: 15px;">
+        <h1 class="mb-3">💵</h1>
+        <h4 class="fw-bold mb-3">Cobro en Efectivo</h4>
+        <p class="text-muted mb-4">Confirma que has recibido el dinero físico en la caja registradora.</p>
+        
+        <form action="{{ url_for('pagos.pagar_efectivo', id_reserva=id_reserva) }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-success w-100 fw-bold py-2 mb-2">Confirmar Ingreso en Caja</button>
+            <a href="{{ url_for('pagos.ver_factura', id_reserva=id_reserva) }}" class="btn btn-light w-100 text-muted">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

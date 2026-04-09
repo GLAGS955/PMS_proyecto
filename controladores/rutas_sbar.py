@@ -16,3 +16,8 @@ rutas_sbar = Blueprint('rutas_sbar',__name__)
 def panel_control():
     return render_template('Inicios/vistas_admin/panel_control.html')
 
+
+rutas_sbar.route('/bienvenidad')
+@login_requerido
+def bienvenida():
+    return render_template('Especial/Bienvenida.html')

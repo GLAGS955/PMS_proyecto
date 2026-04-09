@@ -171,3 +171,29 @@ class ModelHabitaciones:
         finally:
             if cursor:
                 cursor.close()
+
+#Funcion principal Editar
+    @classmethod
+    def editar_habitacion(cls, db, tipo, grado, capacidad, precio, descripcion, id_habitacion):
+        cursor = None
+
+        try:
+            cursor = db.connection.cursor()
+            sql = """UPDATE habitaciones SET
+                tipo = %s,
+                grado = %s,
+                capacidad = %s,
+                precio = %s,
+                descripcion = %s
+                WHERE id_habitacion = %s"""
+            cursor.execute(sql,(tipo, grado, capacidad, precio, descripcion, id_habitacion,))
+            db.connection.commit()
+
+            return cursor.rowcount > 0
+
+        except Exception as actualizar_habitacion:
+            raise ValueError(f"Error de actualizacion de estados de habitaciones {actualizar_habitacion}")
+            
+        finally:
+            if cursor:
+                cursor.close()

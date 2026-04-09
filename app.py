@@ -27,6 +27,8 @@ from controladores.cambiar_pwd import cambiar_contraseña
 from controladores.rutas_sbar import rutas_sbar
 from controladores.habitaciones import habitaciones
 from controladores.reservaciones import reservaciones
+from controladores.clientes_controlador import clientes
+from controladores.pagos_controlador import pagos
 
 
 app_ing.register_blueprint(auth)
@@ -35,7 +37,8 @@ app_ing.register_blueprint(cambiar_contraseña)
 app_ing.register_blueprint(rutas_sbar)
 app_ing.register_blueprint(habitaciones)
 app_ing.register_blueprint(reservaciones)
-
+app_ing.register_blueprint(clientes)
+app_ing.register_blueprint(pagos)
 #                                            Controladores principales
 @app_ing.route("/")
 def Index():
@@ -58,6 +61,12 @@ def Inicio_clientes():
 def pagina_no_encontrada(_error):
     return render_template('Errors/Error404.html'), 404
 
+
+# Si tu app se llama app_ing, usa @app_ing.route. Si es app, usa @app.route
+@app_ing.route('/proceso')
+@login_requerido
+def bloque_proceso():
+    return render_template('Especial/BloqueProceso.html')
 
 #Configuraciones de errores
 app_ing.register_error_handler(404, pagina_no_encontrada)

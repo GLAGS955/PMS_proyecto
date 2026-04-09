@@ -1,0 +1,21 @@
+{% extends 'Inicios/sbar_admin.html' if session.get('rol') == 'admin' else 'Inicios/sbar_clientes.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm border-0 mx-auto p-4" style="max-width: 500px; border-radius: 15px;">
+        <h4 class="text-center fw-bold mb-4" style="color: goldenrod;">Pasarela de Pago Segura</h4>
+        
+        <form action="{{ url_for('pagos.simulador_pago', id_reserva=id_reserva) }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="mb-3">
+                <label class="form-label text-muted small fw-bold">Número de Tarjeta</label>
+                <input type="text" class="form-control" placeholder="XXXX XXXX XXXX XXXX" required>
+            </div>
+            <div class="row mb-4">
+                <div class="col-6"><input type="text" class="form-control" placeholder="MM/YY" required></div>
+                <div class="col-6"><input type="password" class="form-control" placeholder="CVV" required></div>
+            </div>
+            <button type="submit" class="btn text-white w-100 fw-bold py-2" style="background-color: goldenrod;">Simular y Facturar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

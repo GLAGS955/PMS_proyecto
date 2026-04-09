@@ -59,10 +59,10 @@ def agregar_habitacion():
 
     return render_template('common/LogicaNegocios/VistasHabitaciones/agregar.html')
 
-@habitaciones.route('/editar_habitacion/<int:id_exacto>', methods = ['GET', 'POST'])
+@habitaciones.route('/editar_habitacion_exacta/<int:id_exacto>', methods = ['GET', 'POST'])
 @login_requerido
 @es_usted_admin
-def editar_habitacion(id_exacto):
+def ver_habitacion(id_exacto):
     estado = ModelHabitaciones.verificar_estado(db,id_exacto)
 
     if estado in ['Ocupada','Pendiente']:
@@ -72,6 +72,28 @@ def editar_habitacion(id_exacto):
     #primer paso para la edicion mostrar datos de la habitacion a editar
     habitacion_exacta = ModelHabitaciones.Elementos_habitacion(db,id_exacto)
     return render_template ('common/LogicaNegocios/vistasHabitaciones/editarhabitacion.html', habitacion = habitacion_exacta, id_habitacion = id_exacto)
+
+
+@habitaciones.route('/editar_habitacion/<int:id_exacto>', methods = ['GET', 'POST'])
+@login_requerido
+@es_usted_admin
+def editar_habitacion(id_exacto):
+    
+    if request.method == 'POST':
+
+        tipo = request.form.get('tipo')
+        grado = request.form.get('grado')
+        capacidad = int(request.form.get('capacidad'))
+        precio = float(request.form.get('precio'))
+        descripcion = request.form.get('descripcion')
+
+        if ModelHabitaciones.editar_habitacion(db,tipo, grado, capacidad, precio, descripcion, id_exacto):
+            flash("¡La habitacion fue actualizada correctamente!")
+            return redirect(url_for('habitaciones.listar_habitaciones'))
+        
+        else:
+            flash("¡Oh, la actualizacion de la habitacion ha fracasado, vuelve a intentarlo!")
+            return redirect(url_for('habitaciones.listar_habitaciones'))
 
 
 @habitaciones.route('/eliminar_habitacion/<int:id_exacto>', methods = ['POST'])
